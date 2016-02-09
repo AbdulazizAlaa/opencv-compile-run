@@ -7,7 +7,6 @@
   "keywords": [
   ],
   "activationCommands": {
-    "atom-workspace": "opencv-compile-run:toggle"
   },
   "activationEvents": [
       "opencv-compile-run:compile",

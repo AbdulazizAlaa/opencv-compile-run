@@ -12,12 +12,13 @@ module.exports = MyPackage =
     @messageView = new OpencvPackageView(state.myPackageViewState)
     @modalPanel = atom.workspace.addModalPanel(item: @messageView.getElement(), visible: false)
 
+    @callback this, document
+
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
 
     # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'opencv-compile-run:toggle': => @toggle()
-    atom.commands.add 'atom-text-editor', 'opencv-compile-run:compile': => @compile(this)
+    @subscriptions.add atom.commands.add 'atom-text-editor', 'opencv-compile-run:compile': => @compile(this)
     atom.commands.add 'atom-text-editor', 'opencv-compile-run:run': => @run(this)
     atom.commands.add 'atom-text-editor', 'opencv-compile-run:compile-run': => @compile_run(this)
 
@@ -29,6 +30,14 @@ module.exports = MyPackage =
   serialize: ->
     myPackageViewState: @messageView.serialize()
 
+  callback: (t, document) ->
+    t.messageView.element.onmousedown = (e) ->
+      atom.clipboard.write t.messageView.element.firstChild.outerText
+
+    document.getElementsByClassName('workspace')[0].onmousedown = (e) ->
+      if t.modalPanel.isVisible()
+        t.modalPanel.hide()
+
   showMessageBox: (t, message)->
     t.messageView.setContent t.messageView.element.childNodes[0].outerText + "----" + message
     t.modalPanel.item = t.messageView.getElement()
@@ -36,7 +45,7 @@ module.exports = MyPackage =
     t.modalPanel.show()
 
   clearMessageBox: (t)->
-    t.messageView.element.firstChild.textContent = " "
+    t.messageView.element.firstChild.textContent = ""
 
   compile: (t)->
     if t.modalPanel.isVisible()
@@ -83,12 +92,3 @@ module.exports = MyPackage =
             t.showMessageBox t,"Error: " + err
             return
           t.showMessageBox t,"Done: " + stdout
-
-  toggle: ->
-    console.log "path"
-    console.log 'MyPackage was toggled!'
-
-    if @modalPanel.isVisible()
-      @modalPanel.hide()
-    else
-      @modalPanel.show()
