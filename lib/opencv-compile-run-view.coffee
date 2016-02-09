@@ -7,7 +7,7 @@ class OpencvPackageView
 
     # Create message element
     message = document.createElement('div')
-    message.textContent = "The MyPackage package is Alive! It's ALIVE!"
+    message.textContent = ""
     message.classList.add('message')
     @element.appendChild(message)
 

@@ -1,6 +1,5 @@
 OpencvPackageView = require './opencv-compile-run-view'
 {CompositeDisposable} = require 'atom'
-require 'shelljs/global'
 exec = require("child_process").exec
 path = "~/workspace/OpenCV_Projects/cone-shape-detection"
 
@@ -18,9 +17,9 @@ module.exports = MyPackage =
 
     # Register command that toggles this view
     @subscriptions.add atom.commands.add 'atom-workspace', 'opencv-compile-run:toggle': => @toggle()
-    atom.commands.add 'atom-text-editor', 'opencv-compile-run:compile': => @compile(@messageView, @modalPanel)
-    atom.commands.add 'atom-text-editor', 'opencv-compile-run:run': => @run(@messageView, @modalPanel)
-    atom.commands.add 'atom-text-editor', 'opencv-compile-run:compile-run': => @compile_run(@messageView, @modalPanel)
+    atom.commands.add 'atom-text-editor', 'opencv-compile-run:compile': => @compile(this)
+    atom.commands.add 'atom-text-editor', 'opencv-compile-run:run': => @run(this)
+    atom.commands.add 'atom-text-editor', 'opencv-compile-run:compile-run': => @compile_run(this)
 
   deactivate: ->
     @modalPanel.destroy()
@@ -30,86 +29,60 @@ module.exports = MyPackage =
   serialize: ->
     myPackageViewState: @messageView.serialize()
 
-  compile: (messageView, modalPanel)->
-    if modalPanel.isVisible()
-      modalPanel.hide()
+  showMessageBox: (t, message)->
+    t.messageView.setContent t.messageView.element.childNodes[0].outerText + "----" + message
+    t.modalPanel.item = t.messageView.getElement()
+
+    t.modalPanel.show()
+
+  clearMessageBox: (t)->
+    t.messageView.element.firstChild.textContent = " "
+
+  compile: (t)->
+    if t.modalPanel.isVisible()
+      t.modalPanel.hide()
     else
+      t.clearMessageBox t
       console.log "compile opencv code"
-      cd path
-
-      exec 'cmake .', (err, stdout, stderr) ->
+      exec 'cd ' + path + '&& cmake .', (err, stdout, stderr) ->
         if err
-          messageView.setContent "Error: " + err
-          modalPanel.item = messageView.getElement()
-
-          modalPanel.show()
+          t.showMessageBox t,"Error: " + err
           return
-        messageView.setContent "Done: \n" + stdout
-        modalPanel.item = messageView.getElement()
-
-        modalPanel.show()
-
-        exec 'make', (err, stdout, stderr) ->
+        t.showMessageBox t,"Done: " + stdout
+        exec 'cd ' + path + '&& make', (err, stdout, stderr) ->
           if err
-            messageView.setContent "Error: " + err
-            modalPanel.item = messageView.getElement()
-
-            modalPanel.show()
+            t.showMessageBox t,"Error: " + err
             return
-          messageView.setContent "Done: " + stdout
-          modalPanel.item = messageView.getElement()
+          t.showMessageBox t,"Done: " + stdout
 
-          modalPanel.show()
-
-  run: (messageView, modalPanel)->
-    if modalPanel.isVisible()
-      modalPanel.hide()
+  run: (t)->
+    if t.modalPanel.isVisible()
+      t.modalPanel.hide()
     else
+      t.clearMessageBox t
       console.log "running opencv code"
-      cd path
-
-      exec './app', (err, stdout, stderr) ->
+      exec 'cd ' + path + '&& ./app', (err, stdout, stderr) ->
         if err
-          messageView.setContent "Error: " + err
-          modalPanel.item = messageView.getElement()
-
-          modalPanel.show()
+          t.showMessageBox t,"Error: " + err
           return
-        messageView.setContent "Done: \n" + stdout
-        modalPanel.item = messageView.getElement()
+        t.showMessageBox t,"Done: " + stdout
 
-        modalPanel.show()
-
-  compile_run: (messageView, modalPanel)->
-    if modalPanel.isVisible()
-      modalPanel.hide()
+  compile_run: (t)->
+    if t.modalPanel.isVisible()
+      t.modalPanel.hide()
     else
+      t.clearMessageBox t
       console.log "compile and run opencv code"
-      cd path
-
-      exec 'make', (err, stdout, stderr) ->
+      exec 'cd ' + path + '&& make', (err, stdout, stderr) ->
         if err
-          messageView.setContent "Error: " + err
-          modalPanel.item = messageView.getElement()
-
-          modalPanel.show()
+          t.showMessageBox t,"Error: " + err
           return
-        messageView.setContent "Done: \n" + stdout
-        modalPanel.item = messageView.getElement()
-
-        modalPanel.show()
-
-        exec './app', (err, stdout, stderr) ->
+        t.showMessageBox t,"Done: " + stdout
+        exec 'cd ' + path + '&& ./app', (err, stdout, stderr) ->
           if err
-            messageView.setContent "Error: " + err
-            modalPanel.item = messageView.getElement()
-
-            modalPanel.show()
+            t.showMessageBox t,"Error: " + err
             return
-          messageView.setContent "Done: " + stdout
-          modalPanel.item = messageView.getElement()
-
-          modalPanel.show()
+          t.showMessageBox t,"Done: " + stdout
 
   toggle: ->
     console.log "path"
