@@ -1,0 +1,7 @@
+{
+  ".editor": {
+    "ctrl-alt-shift-c": "opencv-compile-run:compile",
+    "ctrl-alt-shift-o": "opencv-compile-run:run",
+    "ctrl-alt-shift-b": "opencv-compile-run:compile-run"
+  }
+}
