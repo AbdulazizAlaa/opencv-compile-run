@@ -1,7 +1,7 @@
 {
   "name": "opencv-compile-run",
   "main": "./lib/opencv-compile-run",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "A package that can generate cmake files for opencv projects, compile and run them.",
   "author" : "Abdulaziz Mohamed Alaa",
   "keywords": [
