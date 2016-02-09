@@ -1,23 +1,20 @@
 {
   "name": "opencv-compile-run",
   "main": "./lib/opencv-compile-run",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A package that can generate cmake files for opencv projects, compile and run them.",
-  "author" : "Abdulaziz Mohamed Alaa",
-  "keywords": [
-  ],
-  "activationCommands": {
-  },
+  "author": "Abdulaziz Mohamed Alaa",
+  "keywords": [],
+  "activationCommands": {},
   "activationEvents": [
-      "opencv-compile-run:compile",
-      "opencv-compile-run:run",
-      "opencv-compile-run:compile-run"
+    "opencv-compile-run:compile",
+    "opencv-compile-run:run",
+    "opencv-compile-run:compile-run"
   ],
   "repository": "https://github.com/AbdulazizAlaa/opencv-compile-run",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
