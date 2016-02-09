@@ -1,0 +1,6 @@
+'atom-text-editor':
+    'ctrl-alt-shift-c': 'opencv-compile-run:compile'
+    'ctrl-alt-shift-o': 'opencv-compile-run:run'
+    'f5': 'opencv-compile-run:compile-run'
+'atom-workspace':
+    'ctrl-alt-o': 'opencv-compile-run:toggle'

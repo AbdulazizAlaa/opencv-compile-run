@@ -4,6 +4,10 @@
     {
       'label': 'Toggle opencv-compile-run'
       'command': 'opencv-compile-run:toggle'
+    },
+    {
+        'label' : 'Run opencv-compile-run'
+        'command' : 'opencv-compile-run:compile'
     }
   ]
 'menu': [
@@ -15,6 +19,18 @@
         {
           'label': 'Toggle'
           'command': 'opencv-compile-run:toggle'
+        },
+        {
+            'label' : 'Compile opencv-compile-run'
+            'command' : 'opencv-compile-run:compile'
+        },
+        {
+            'label' : 'Run opencv-compile-run'
+            'command' : 'opencv-compile-run:run'
+        },
+        {
+            'label' : 'Compile & Run opencv-compile-run'
+            'command' : 'opencv-compile-run:compile-run'
         }
       ]
     ]

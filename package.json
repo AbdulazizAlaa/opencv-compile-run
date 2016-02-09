@@ -14,7 +14,7 @@
       "opencv-compile-run:run",
       "opencv-compile-run:compile-run"
   ],
-  "repository": "https://github.com/atom/opencv-compile-run",
+  "repository": "https://github.com/AbdulazizAlaa/opencv-compile-run",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
