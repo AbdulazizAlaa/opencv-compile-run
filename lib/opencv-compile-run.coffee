@@ -1,7 +1,7 @@
 OpencvPackageView = require './opencv-compile-run-view'
 {CompositeDisposable} = require 'atom'
 exec = require("child_process").exec
-path = "~/workspace/OpenCV_Projects/cone-shape-detection"
+path = '~/workspace/OpenCV_Projects/cone-shape-detection'
 
 module.exports = MyPackage =
   messageView: null
@@ -21,6 +21,12 @@ module.exports = MyPackage =
     @subscriptions.add atom.commands.add 'atom-text-editor', 'opencv-compile-run:compile': => @compile(this)
     atom.commands.add 'atom-text-editor', 'opencv-compile-run:run': => @run(this)
     atom.commands.add 'atom-text-editor', 'opencv-compile-run:compile-run': => @compile_run(this)
+    # atom.commands.add 'atom-text-editor', 'opencv-compile-run:path': => @path(this)
+    # if window.File && window.FileReader && window.FileList && window.Blob
+    #   # do your stuff!
+    #   @readfile(this, state)
+    # else
+    #   console.log  'The File APIs are not fully supported by your browser.'
 
   deactivate: ->
     @modalPanel.destroy()
@@ -53,12 +59,12 @@ module.exports = MyPackage =
     else
       t.clearMessageBox t
       console.log "compile opencv code"
-      exec 'cd ' + path + '&& cmake .', (err, stdout, stderr) ->
+      exec 'cd ' + path + ' && cmake .', (err, stdout, stderr) ->
         if err
           t.showMessageBox t,"Error: " + err
           return
         t.showMessageBox t,"Done: " + stdout
-        exec 'cd ' + path + '&& make', (err, stdout, stderr) ->
+        exec 'cd ' + path + ' && make', (err, stdout, stderr) ->
           if err
             t.showMessageBox t,"Error: " + err
             return
@@ -70,7 +76,7 @@ module.exports = MyPackage =
     else
       t.clearMessageBox t
       console.log "running opencv code"
-      exec 'cd ' + path + '&& ./app', (err, stdout, stderr) ->
+      exec 'cd ' + path + ' && ./app', (err, stdout, stderr) ->
         if err
           t.showMessageBox t,"Error: " + err
           return
@@ -82,12 +88,12 @@ module.exports = MyPackage =
     else
       t.clearMessageBox t
       console.log "compile and run opencv code"
-      exec 'cd ' + path + '&& make', (err, stdout, stderr) ->
+      exec 'cd ' + path + ' && make', (err, stdout, stderr) ->
         if err
           t.showMessageBox t,"Error: " + err
           return
         t.showMessageBox t,"Done: " + stdout
-        exec 'cd ' + path + '&& ./app', (err, stdout, stderr) ->
+        exec 'cd ' + path + ' && ./app', (err, stdout, stderr) ->
           if err
             t.showMessageBox t,"Error: " + err
             return
