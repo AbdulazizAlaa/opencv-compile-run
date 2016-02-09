@@ -62,10 +62,54 @@ module.exports = MyPackage =
           modalPanel.show()
 
   run: (messageView, modalPanel)->
-    console.log "running opencv code"
+    if modalPanel.isVisible()
+      modalPanel.hide()
+    else
+      console.log "running opencv code"
+      cd path
+
+      exec './app', (err, stdout, stderr) ->
+        if err
+          messageView.setContent "Error: " + err
+          modalPanel.item = messageView.getElement()
+
+          modalPanel.show()
+          return
+        messageView.setContent "Done: \n" + stdout
+        modalPanel.item = messageView.getElement()
+
+        modalPanel.show()
 
   compile_run: (messageView, modalPanel)->
-    console.log "compile and run opencv code"
+    if modalPanel.isVisible()
+      modalPanel.hide()
+    else
+      console.log "compile and run opencv code"
+      cd path
+
+      exec 'make', (err, stdout, stderr) ->
+        if err
+          messageView.setContent "Error: " + err
+          modalPanel.item = messageView.getElement()
+
+          modalPanel.show()
+          return
+        messageView.setContent "Done: \n" + stdout
+        modalPanel.item = messageView.getElement()
+
+        modalPanel.show()
+
+        exec './app', (err, stdout, stderr) ->
+          if err
+            messageView.setContent "Error: " + err
+            modalPanel.item = messageView.getElement()
+
+            modalPanel.show()
+            return
+          messageView.setContent "Done: " + stdout
+          modalPanel.item = messageView.getElement()
+
+          modalPanel.show()
 
   toggle: ->
     console.log "path"
@@ -75,70 +119,3 @@ module.exports = MyPackage =
       @modalPanel.hide()
     else
       @modalPanel.show()
-
-# require('shelljs/global');
-# var exec = require('child_process').exec;
-# var path = "~/workspace/OpenCV_Projects/cone-shape-detection";
-#
-# module.exports = {
-#   activate: function() {
-#       atom.commands.add('atom-text-editor', 'opencv-compile-run:compile', this.compile);
-#       atom.commands.add('atom-text-editor', 'opencv-compile-run:run', this.run);
-#       atom.commands.add('atom-text-editor', 'opencv-compile-run:compile-run', this.compile_run);
-#   },
-#   compile: function(){
-#       cd(path);
-#       var editor = atom.workspace.getActiveTextEditor();
-#       exec('cmake .',
-#       function(err, stdout, stderr) {
-#           if (err) {
-#             editor.insertText("error"+err);
-#             return;
-#           }
-#           //editor.insertText("done"+stdout);
-#           exec('make',
-#           function(err, stdout, stderr) {
-#               if (err) {
-#                 editor.insertText("error"+err);
-#                 return;
-#               }
-#               //editor.insertText("done"+stdout);
-#             });
-#         });
-#   },
-#   run: function(){
-#       cd(path);
-#       var editor = atom.workspace.getActiveTextEditor();
-#
-#     exec('./app',
-#     function(err, stdout, stderr) {
-#         if (err) {
-#           editor.insertText("error"+err);
-#           return;
-#         }
-#         //editor.insertText("done"+stdout);
-#       });
-#
-#   },
-#   compile_run: function(){
-#       cd(path);
-#       var editor = atom.workspace.getActiveTextEditor();
-#
-#       exec('make',
-#       function(err, stdout, stderr) {
-#           if (err) {
-#             editor.insertText("error"+err);
-#             return;
-#           }
-#           //editor.insertText("done"+stdout);
-#           exec('./app',
-#           function(err, stdout, stderr) {
-#               if (err) {
-#                 editor.insertText("error"+err);
-#                 return;
-#               }
-#               //editor.insertText("done"+stdout);
-#             });
-#         });
-#   }
-# };
